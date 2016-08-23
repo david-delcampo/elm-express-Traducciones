@@ -1,0 +1,24 @@
+doctype html
+html(lang="es")
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    
+    title!= title
+    
+    link(rel='stylesheet', href='/bootstrap/css/bootstrap.min.css')
+        
+  body
+    include ../public/html/nav.html
+  
+    .container          
+      if error
+        include ./error.pug
+    
+      .page-header    
+        block content
+
+    script(src='/js/jquery.min.js')
+    script(src='/bootstrap/js/bootstrap.min.js')
+

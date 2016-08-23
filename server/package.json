@@ -1,0 +1,18 @@
+{
+  "name": "app-express-prototype",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "nodemon ./server.js -e js,pug"
+  },
+  "dependencies": {
+    "body-parser": "~1.13.2",
+    "bootstrap": "^3.3.6",
+    "cookie-parser": "~1.3.5",
+    "express": "~4.13.1",    
+    "pug": "^2.0.0-alpha8"
+  },
+  "devDependencies": {
+    "nodemon": "^1.9.2"
+  }
+}
