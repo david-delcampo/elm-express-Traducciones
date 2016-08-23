@@ -2,3 +2,4 @@
 /app/api/data.json
 /app/elm-stuff/
 /app/node_modules/
+/server/db/data.json
