@@ -101,6 +101,7 @@ actualizarTraducciones traducciones =
 
 type Msg
   = SetTraducciones (Maybe (List Traduccion))
+  | UpdateTraduccionItaliano Traduccion String
   | UpdateTraduccionIngles Traduccion String
   | Aceptar Traduccion
   | Cancelar
@@ -114,6 +115,12 @@ update msg model =
           ({ model | traducciones = traducciones }, Cmd.none)
         Nothing ->
             (model, Cmd.none)
+            
+    UpdateTraduccionItaliano traduccion italiano ->
+      let         
+         newTraduccion = ({ traduccion | italiano = italiano })
+      in
+        ({model | traducciones = List.map (cambiarTraduccion newTraduccion) model.traducciones}, Cmd.none)                
     
     UpdateTraduccionIngles traduccion ingles ->
       let         
@@ -161,7 +168,11 @@ testo traduccion =
   li []
     [
       textarea [ placeholder "Texto", value traduccion.texto] [],
-      textarea [ placeholder "Italiano", value traduccion.italiano] [],
+      textarea [ 
+        placeholder "Italiano", 
+        value traduccion.italiano,
+        onInput (UpdateTraduccionItaliano traduccion)
+        ] [],      
       textarea [ 
         placeholder "Ingles", 
         value traduccion.ingles,
