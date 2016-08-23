@@ -29,3 +29,66 @@ modeloInicial : Model
 modeloInicial = {
   traducciones = []  
   }
+  
+  
+-- MSG (after: EFFECTS)
+
+
+traduccionesDecoder : JsD.Decoder (List Traduccion)
+traduccionesDecoder =
+  JsD.list traduccionDecoder
+
+
+traduccionDecoder : JsD.Decoder Traduccion
+traduccionDecoder =
+  JsD.object4 Traduccion
+    ("texto" := JsD.string)
+    ("italiano" := JsD.string)
+    ("ingles" := JsD.string)
+    ("id" := JsD.int)
+
+traduccionesEncoder : List Traduccion -> String
+traduccionesEncoder traducciones =
+  let
+    listaDeObjectsJsE  = List.map traduccionEncoder traducciones
+    objectJsE = JsE.list (listaDeObjectsJsE)
+  in
+    JsE.encode 0 objectJsE
+
+traduccionEncoder : Traduccion -> JsE.Value
+traduccionEncoder traduccion =
+    JsE.object
+          [ ("texto", JsE.string traduccion.texto),
+            ("italiano", JsE.string traduccion.italiano),
+            ("ingles", JsE.string traduccion.ingles),
+            ("id", JsE.int traduccion.id) ]
+
+baseUrl : String
+baseUrl =
+    "http://127.0.0.1:3000/db/"
+
+findAll : Cmd Msg
+findAll =
+  Http.get traduccionesDecoder baseUrl
+    |> Task.toMaybe
+    |> Task.Extra.performFailproof SetTraducciones
+
+actualizarTraducciones : List Traduccion -> Cmd Msg
+actualizarTraducciones traducciones =
+  let
+      body =
+        Http.string (traduccionesEncoder traducciones)
+  in
+      Http.send Http.defaultSettings
+        {
+          verb = "POST",
+          headers =
+            [ ( "Content-Type", "application/json" ),
+              ( "Accept", "application/json" )
+            ],
+          url = baseUrl,
+          body = body
+        }
+        |> Http.fromJson traduccionesDecoder
+        |> Task.toMaybe
+        |> Task.Extra.performFailproof SetTraducciones  
