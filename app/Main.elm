@@ -95,3 +95,40 @@ actualizarTraducciones traducciones =
         |> Http.fromJson traduccionesDecoder
         |> Task.toMaybe
         |> Task.Extra.performFailproof SetTraducciones  
+        
+        
+-- UPDATE
+
+type Msg
+  = SetTraducciones (Maybe (List Traduccion))
+  | UpdateTraduccionIngles Traduccion String
+  | Aceptar Traduccion
+  | Cancelar
+
+update : Msg -> Model -> (Model, Cmd Msg)
+update msg model =
+  case msg of
+    SetTraducciones response ->
+      case response of
+        Just traducciones ->
+          ({ model | traducciones = traducciones }, Cmd.none)
+        Nothing ->
+            (model, Cmd.none)
+    
+    UpdateTraduccionIngles traduccion ingles ->
+      let         
+         newTraduccion = ({ traduccion | ingles = ingles })
+      in
+        ({model | traducciones = List.map (cambiarTraduccion newTraduccion) model.traducciones}, Cmd.none)    
+    
+    Aceptar traduccion ->
+      (model, actualizarTraducciones model.traducciones)
+        
+    Cancelar ->
+      (model, Cmd.none)
+
+cambiarTraduccion : Traduccion -> Traduccion -> Traduccion
+cambiarTraduccion new old =
+  case new.id == old.id of
+    True -> new
+    False -> old          
