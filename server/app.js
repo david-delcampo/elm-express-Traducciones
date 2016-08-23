@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 
 // statis: js,img,css
 app.use('/bootstrap', express.static(__dirname + '/node_modules/bootstrap/dist/'));
-app.use(express.static(path.join(__dirname, './public')));
+app.use(express.static(path.join(__dirname, '../app')));
 
 // routes
 var routes = require('./routes/index');
