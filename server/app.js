@@ -18,6 +18,6 @@ app.use(express.static(path.join(__dirname, './public')));
 
 // routes
 var routes = require('./routes/index');
-app.use('/', routes);
+app.use('/db', routes);
 
 module.exports = app;
