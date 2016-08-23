@@ -30,6 +30,9 @@ modeloInicial = {
   traducciones = []  
   }
   
+init : (Model, Cmd Msg)
+init = (modeloInicial, findAll)
+  
   
 -- MSG (after: EFFECTS)
 
