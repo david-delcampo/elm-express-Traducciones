@@ -1,0 +1,12 @@
+{
+  "name": "cursos",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "chokidar-cli": "^1.2.0",
+    "elm": "0.17.0"
+    },
+  "scripts": {
+    "watch": "chokidar '**/*.elm' -c 'elm make Main.elm --output main.js'"
+  }
+}
