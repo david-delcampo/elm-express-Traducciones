@@ -131,4 +131,59 @@ cambiarTraduccion : Traduccion -> Traduccion -> Traduccion
 cambiarTraduccion new old =
   case new.id == old.id of
     True -> new
-    False -> old          
+    False -> old    
+    
+    
+-- VIEW
+
+pageHeader : Html Msg
+pageHeader =
+  div []
+    [
+      h1 [] [text "Traducciones"],
+      ul [] [
+        li [] [
+          textarea [ class "cabecera", value "Texto"] [],
+          textarea [ class "cabecera", value "Italiano"] [],
+          textarea [ class "cabecera", value "Ingles"] []
+        ]
+      ]
+    ]
+
+botones : Traduccion -> Html Msg
+botones traduccion =
+    span [] [ 
+        button [ class "add small", onClick (Aceptar traduccion) ] [ text "✔" ],
+        button [ class "add small", onClick Cancelar ] [ text "✘" ] ]
+    
+testo : Traduccion -> Html Msg
+testo traduccion =
+  li []
+    [
+      textarea [ placeholder "Texto", value traduccion.texto] [],
+      textarea [ placeholder "Italiano", value traduccion.italiano] [],
+      textarea [ 
+        placeholder "Ingles", 
+        value traduccion.ingles,
+        onInput (UpdateTraduccionIngles traduccion)
+        ] [],
+      botones traduccion
+    ]
+
+testos : List Traduccion -> Html Msg
+testos traducciones =
+  let
+      registros = List.map testo traducciones
+      elementos = registros
+  in
+      ul [] elementos
+
+ 
+view : Model -> Html Msg
+view model =
+  div [id "container"]
+    [pageHeader,     
+    br [] [],
+    testos model.traducciones
+    ]
+    
